@@ -1,2 +1,81 @@
 
 //工厂设计模式
+
+/*
+举个例行：皇帝  新衣服    裁缝  ， 皇帝没必要知道衣服是怎么造出来的，只要告诉裁缝要一件什么样的衣服，后续怎么准备材料，上什么颜色，怎么实施制作都由裁缝
+来搞定， 皇帝不关心这些，他只要享受成品衣服。这个裁缝就是衣服工厂，他隐藏了产品的制造细节，方便扩展。
+*/
+package main
+
+import "fmt"
+
+type Action interface{
+	Move(int) int
+}
+
+type Animal struct{
+	Name string
+}
+
+
+type Fish struct{
+	Animal
+}
+
+func (this * Fish)Move( num int) int {
+	fmt.Printf("I am is a Fish, I swiming %d meters \n", num)
+	return num
+}
+type Dog struct{
+	Animal
+}
+func (this * Dog) Move( num int) int {
+	fmt.Printf("I am is a Dog, I runnig %d meters \n", num)
+	return num
+}
+type Cat struct{
+	Animal
+}
+func (this * Cat) Move( num int) int {
+	fmt.Printf("I am is a cat, I jump %d meters \n", num)
+	return num
+}
+
+
+
+type AnimalFactory struct {
+
+}
+
+func NewAnimalFactory ()*AnimalFactory{
+	return &AnimalFactory{}
+}
+
+
+func (this *AnimalFactory)CreatAnimal(name string) Action{
+	switch name {
+	case "cat":
+		return &Cat{}
+	case "dog":
+		return &Dog{}
+	case "fish":
+		return &Fish{}
+	default:
+		panic("error animal type")
+	    return nil
+	}
+}
+
+
+
+func main(){
+
+	bird := NewAnimalFactory().CreatAnimal("cat")
+	bird.Move(11)
+
+	fish := NewAnimalFactory().CreatAnimal("fish")
+	fish.Move(20)
+
+	dog := NewAnimalFactory().CreatAnimal("dog")
+	dog.Move(100)
+}
